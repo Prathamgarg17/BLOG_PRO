@@ -1,5 +1,6 @@
 const {User} = require("./models");
 var jwt = require ("jsonwebtoken");
+const key = "gdjshfhkjfjfl";
 const register = async(req,res)=>{
   var isExist = await User.findOne({ 
    $or: [{username:req.body.username},{email:req.body.email}]
@@ -23,10 +24,10 @@ const loginMiddleWare = async(req,res,next)=>{
     if(!user){
         return res.json({status: "Error", message: "Username not found"});
     }
-    if(!user.authenticate(password)){
+    if(!user.isAuthenticate(password)){
         return res.json({status: "Error", message: "You entered wrong password"});
     }
-    var token = jwt.sign({_id:user._id},user.salt);
+    var token = jwt.sign({_id:user._id},key);
     req.body.token = token;
     req.body.user = user;
     next();

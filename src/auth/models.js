@@ -26,13 +26,13 @@ UserSchema.virtual("password").set(function(planpassword){
 });
 UserSchema.methods = {
     securePassword: function(planpassword){
-        return Crypto.SHA256(planpassword, this.salt).toString();
+        return CryptoJs.SHA256(planpassword, this.salt).toString();
     },
-    Isauthenticate : function(planpassword){
+    isAuthenticate : function(planpassword){
         return this.ency_password === this.securePassword(planpassword);
     },
 };
 
 const User = mongoose.model("User", UserSchema);
-module.exports = User;
+module.exports = {User};
 
